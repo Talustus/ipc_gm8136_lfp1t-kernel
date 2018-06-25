@@ -1,0 +1,17 @@
+rm -f ./usr/initramfs_data.cpio.gz
+make -j4
+# cp -f arch/arm/boot/zImage /tftpboot/mbootpImage
+# cp -f System.map /tftpboot/
+# cp -f vmlinux /tftpboot/
+find . -name *.ko -exec cp -v {} /home/talustus/ip-cam/nfs/modules/ \;
+
+
+# sudo chown nobody:nobody /tftpboot/mbootpImage
+##
+./mkimage -A arm -O linux -T kernel -C none -a 2000000 -e 2000040 -n gm8136 -d arch/arm/boot/zImage arch/arm/boot/uImage
+##
+cp -f arch/arm/boot/uImage /home/talustus/ip-cam/nfs/uImage_8136
+cp -f arch/arm/boot/zImage /home/talustus/ip-cam/nfs/mbootpImage
+##
+sudo chown nobody:nogroup /home/talustus/ip-cam/nfs/uImage_8136
+sudo chown nobody:nogroup /home/talustus/ip-cam/nfs/mbootpImage
